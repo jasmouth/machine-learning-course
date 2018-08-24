@@ -62,22 +62,19 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+X = [ones(m, 1) X];
 
+a2 = sigmoid(X * Theta1');
+a2 = [ones(m, 1) a2];
 
+a3 = sigmoid(a2 * Theta2');
+%[max, h] = max(a3, [], 2);
+h = a3;
 
+fprintf(["Size of h: %f\n"], size(h));
+%h
 
-
-
-
-
-
-
-
-
-
-
-
-
+J = -1/m * (y' * log(h) + (1 - y)' * log(1 - h));
 
 
 % -------------------------------------------------------------
