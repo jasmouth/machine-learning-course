@@ -62,20 +62,21 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% Add column of ones to X
 X = [ones(m, 1) X];
 
+% Compute a2
 a2 = sigmoid(X * Theta1');
 a2 = [ones(m, 1) a2];
 
-a3 = sigmoid(a2 * Theta2');
-%[max, h] = max(a3, [], 2);
-h = a3;
+% Compute a3 = h
+h = sigmoid(a2 * Theta2');
 
-fprintf(["Size of h: %f\n"], size(h));
-%h
-
-J = -1/m * (y' * log(h) + (1 - y)' * log(1 - h));
-
+for i = 1:m,
+    for k = 1:num_labels,
+        J += -1/m *((y(i) == k) * log(h(i,k)) + (1 - (y(i) == k)) * log(1 - h(i,k)));
+    endfor
+endfor
 
 % -------------------------------------------------------------
 
