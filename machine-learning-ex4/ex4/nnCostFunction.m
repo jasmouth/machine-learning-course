@@ -79,21 +79,13 @@ for i = 1:m,
   J += -1/m * (Y(i,:) * log(h(i,:))' + (1 - Y(i,:)) * log(1 - h(i,:))');
 endfor
 
-reg_term = 0;
+% Remove the bias terms from the Theta matrices (the bias terms correspond
+% to the first column of the matrices).
 Theta1 = Theta1(:, 2:end);
 Theta2 = Theta2(:, 2:end);
-for i = 1:input_layer_size,
-  for j = 1:hidden_layer_size,
-    reg_term += Theta1(j,i)^2;
-  endfor
-endfor
-for i = 1:hidden_layer_size,
-  for j = 1:num_labels,
-    reg_term += Theta2(j,i)^2;
-  endfor
-endfor
 
-J += lambda/(2*m) * reg_term;
+% Add the regularization term to the value of the cost function.
+J += lambda/(2*m) * sum([sum(sum(Theta1.^2)), sum(sum(Theta2.^2))]);
 
 % -------------------------------------------------------------
 
