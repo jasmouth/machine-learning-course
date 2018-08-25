@@ -62,30 +62,51 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% Add column of ones to X
+a1 = X = [ones(m, 1) X];
 
+% Compute z2, a2
+z2 = X * Theta1';
+a2 = sigmoid(z2);
+a2 = [ones(m, 1) a2];
 
+% Compute a3 = h
+a3 = h = sigmoid(a2 * Theta2');
 
+% Convert y labels into a matrix of binary vectors
+Y = [1:num_labels == y];
 
+for i = 1:m,
+  J += -1/m * (Y(i,:) * log(h(i,:))' + (1 - Y(i,:)) * log(1 - h(i,:))');
+endfor
 
+% Remove the bias terms from the Theta matrices (the bias terms correspond
+% to the first column of the matrices).
+T_1 = Theta1(:, 2:end);
+T_2 = Theta2(:, 2:end);
 
-
-
-
-
-
-
-
-
-
-
-
+% Add the regularization term to the value of the cost function.
+J += lambda/(2*m) * sum([sum(sum(T_1.^2)), sum(sum(T_2.^2))]);
 
 % -------------------------------------------------------------
+% Backpropagation Algorithm:
+
+delta_1 = zeros(size(Theta1));
+delta_2 = zeros(size(Theta2));
+for i = 1:m,
+  d3 = a3(i,:)' - Y(i,:)';
+  d2 = Theta2(:,2:end)' * d3 .* sigmoidGradient(z2(i,:))';
+
+  delta_1 += d2 * a1(i,:);
+  delta_2 += d3 * a2(i,:);
+endfor
+
+Theta1_grad = (1/m * delta_1) + (lambda/m * [zeros(size(Theta1, 1), 1) Theta1(:, 2:end)]);
+Theta2_grad = (1/m * delta_2) + (lambda/m * [zeros(size(Theta2, 1), 1) Theta2(:, 2:end)]);
 
 % =========================================================================
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end
