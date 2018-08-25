@@ -72,11 +72,13 @@ a2 = [ones(m, 1) a2];
 % Compute a3 = h
 h = sigmoid(a2 * Theta2');
 
+% Convert y labels into a matrix of binary vectors
+Y = [1:num_labels == y];
+
 for i = 1:m,
-    for k = 1:num_labels,
-        J += -1/m *((y(i) == k) * log(h(i,k)) + (1 - (y(i) == k)) * log(1 - h(i,k)));
-    endfor
+  J += -1/m * (Y(i,:) * log(h(i,:))' + (1 - Y(i,:)) * log(1 - h(i,:))');
 endfor
+
 
 % -------------------------------------------------------------
 
