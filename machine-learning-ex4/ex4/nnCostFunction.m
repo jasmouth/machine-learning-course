@@ -63,14 +63,15 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 % Add column of ones to X
-X = [ones(m, 1) X];
+a1 = X = [ones(m, 1) X];
 
-% Compute a2
-a2 = sigmoid(X * Theta1');
+% Compute z2, a2
+z2 = X * Theta1';
+a2 = sigmoid(z2);
 a2 = [ones(m, 1) a2];
 
 % Compute a3 = h
-h = sigmoid(a2 * Theta2');
+a3 = h = sigmoid(a2 * Theta2');
 
 % Convert y labels into a matrix of binary vectors
 Y = [1:num_labels == y];
@@ -81,13 +82,29 @@ endfor
 
 % Remove the bias terms from the Theta matrices (the bias terms correspond
 % to the first column of the matrices).
-Theta1 = Theta1(:, 2:end);
-Theta2 = Theta2(:, 2:end);
+T_1 = Theta1(:, 2:end);
+T_2 = Theta2(:, 2:end);
 
 % Add the regularization term to the value of the cost function.
-J += lambda/(2*m) * sum([sum(sum(Theta1.^2)), sum(sum(Theta2.^2))]);
+J += lambda/(2*m) * sum([sum(sum(T_1.^2)), sum(sum(T_2.^2))]);
 
 % -------------------------------------------------------------
+% Backpropagation Algorithm:
+
+delta_1 = zeros(size(Theta1));
+delta_2 = zeros(size(Theta2));
+for i = 1:m,
+  d3 = a3(i,:)' - Y(i,:)';
+  d2 = Theta2' * d3 .* (a2(i,:) .* (1 - a2(i,:)))';
+  % Remove d2_0 as this corresponds to the error of the bias term.
+  d2 = d2(2:end);
+
+  delta_1 += d2 * a1(i,:);
+  delta_2 += d3 * a2(i,:);
+endfor
+
+Theta1_grad = 1/m * delta_1;
+Theta2_grad = 1/m * delta_2;
 
 % =========================================================================
 
