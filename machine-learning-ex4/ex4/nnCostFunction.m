@@ -95,9 +95,7 @@ delta_1 = zeros(size(Theta1));
 delta_2 = zeros(size(Theta2));
 for i = 1:m,
   d3 = a3(i,:)' - Y(i,:)';
-  d2 = Theta2' * d3 .* (a2(i,:) .* (1 - a2(i,:)))';
-  % Remove d2_0 as this corresponds to the error of the bias term.
-  d2 = d2(2:end);
+  d2 = Theta2(:,2:end)' * d3 .* sigmoidGradient(z2(i,:))';
 
   delta_1 += d2 * a1(i,:);
   delta_2 += d3 * a2(i,:);
@@ -110,6 +108,5 @@ Theta2_grad = (1/m * delta_2) + (lambda/m * [zeros(size(Theta2, 1), 1) Theta2(:,
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end
