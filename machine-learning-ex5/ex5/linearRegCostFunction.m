@@ -19,16 +19,13 @@ grad = zeros(size(theta));
 %               You should set J to the cost and grad to the gradient.
 %
 
+% Compute (h(x) - y)
+error = (X * theta - y);
+% Remove the bias term from theta to prevent including it in regularization.
+theta(1) = 0;
 
-
-
-
-
-
-
-
-
-
+J = 1/(2*m) * (error' * error) + lambda/(2*m) * (theta' * theta);
+grad = (1/m * X' * error) + lambda/m * theta;
 
 % =========================================================================
 
