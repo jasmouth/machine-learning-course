@@ -23,12 +23,28 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+min_error = 1.0;
+vals = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+curr_c = curr_sigma = 0.0;
 
-
-
-
-
-
+for i = 1:numel(vals),
+    curr_c = vals(i);
+    for j = 1:numel(vals),
+        curr_sigma = vals(j);
+        fprintf('#######################################\n');
+        model = svmTrain(X, y, curr_c, @(x1, x2) gaussianKernel(x1, x2, curr_sigma));
+        predictions = svmPredict(model, Xval);
+        curr_error = mean(double(predictions ~= yval));
+        fprintf(['Given C: %f, sigma: %f, Prediction error was: %f\n\n'], curr_c, curr_sigma, ...
+            curr_error);
+        if (curr_error < min_error),
+            min_error = curr_error;
+            C = curr_c;
+            sigma = curr_sigma;
+        endif
+    endfor
+endfor
+fprintf(['Minimum Prediction error: %f\n'], min_error);
 % =========================================================================
 
 end
