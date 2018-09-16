@@ -26,7 +26,14 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
-
+for k = 1:K,
+  % C_k is a column vector where each element is an index of an example in
+  % X that belongs to centroid k.
+  C_k = find(idx == k);
+  
+  % The centroid k is updated to be the mean of the elements belonging to it.
+  centroids(k, :) = sum(X(C_k, :)) / numel(C_k);
+endfor
 
 % =============================================================
 
