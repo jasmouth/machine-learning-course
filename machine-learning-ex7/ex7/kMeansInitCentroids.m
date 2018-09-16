@@ -13,12 +13,10 @@ centroids = zeros(K, size(X, 2));
 %               the dataset X
 %
 
-
-
-
-
-
-
+% Create a list of random indices from 1 to N (where X is an NxM matrix).
+rand_ids = randperm(size(X, 1));
+% Select K random examples as the centroids.
+centroids = X(rand_ids(1:K), :);
 
 % =============================================================
 
