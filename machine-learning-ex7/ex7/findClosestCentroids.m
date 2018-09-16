@@ -21,11 +21,11 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-
-
-
-
-
+for i = 1:size(idx),
+  v = X(i,:) - centroids;
+  [_, pos] = min(diag(v * v'));
+  idx(i) = pos;
+endfor
 
 % =============================================================
 
