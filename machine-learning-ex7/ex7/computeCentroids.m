@@ -26,17 +26,23 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
+empty_centroids = [];
 for k = 1:K,
   % C_k is a column vector where each element is an index of an example in
   % X that belongs to centroid k.
   C_k = find(idx == k);
-  
+  divisor = numel(C_k);
+  % If no elements belong to the centroid, it should be removed.
+  if (divisor == 0),
+    empty_centroids = [empty_centroids; k];
+    continue;
+  endif
   % The centroid k is updated to be the mean of the elements belonging to it.
-  centroids(k, :) = sum(X(C_k, :)) / numel(C_k);
+  centroids(k, :) = sum(X(C_k, :)) / divisor;
 endfor
+% Remove all of the empty centroids.
+centroids(empty_centroids, :) = [];
 
 % =============================================================
 
-
 end
-
