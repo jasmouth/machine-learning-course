@@ -21,14 +21,9 @@ sigma2 = zeros(n, 1);
 %               should contain variance of the i-th feature.
 %
 
-
-
-
-
-
-
-
-
+% The final (:) terms are used to convert mu and sigma2 into column vectors
+mu = 1/m * sum(X)(:);
+sigma2 = 1/m * sum((X - mu').^2)(:);
 
 % =============================================================
 

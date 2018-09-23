@@ -40,20 +40,15 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+% Note: R .* M will set each element of M to 0 unless the corresponding
+% value in R is 1 (i.e. only keep elements where R(i,j) = 1).
+predictions = R .* (X * Theta');
+error = (predictions - Y);
+J = 0.5 * sum(diag(error' * error)) + (lambda/2 * sum(diag(X' * X))) ...
+    + (lambda/2 * sum(diag(Theta' * Theta)));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+X_grad = ((predictions - Y) * Theta) + lambda .* X;
+Theta_grad = ((X' * (predictions - Y))') + lambda .* Theta;
 
 % =============================================================
 

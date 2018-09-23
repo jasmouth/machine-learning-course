@@ -53,7 +53,7 @@ pause
 %
 fprintf('Visualizing Gaussian fit.\n\n');
 
-%  Estimate my and sigma2
+%  Estimate mu and sigma2
 [mu sigma2] = estimateGaussian(X);
 
 %  Returns the density of the multivariate normal at each data point (row) 
@@ -81,7 +81,7 @@ fprintf('Best F1 on Cross Validation Set:  %f\n', F1);
 fprintf('   (you should see a value epsilon of about 8.99e-05)\n');
 fprintf('   (you should see a Best F1 value of  0.875000)\n\n');
 
-%  Find the outliers in the training set and plot the
+%  Find the outliers in the training set and plot them.
 outliers = find(p < epsilon);
 
 %  Draw a red circle around those outliers
